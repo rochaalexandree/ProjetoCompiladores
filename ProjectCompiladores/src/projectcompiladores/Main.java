@@ -9,13 +9,14 @@ public class Main {
 	static Lexico lexico = new Lexico();
 	public static void main(String[] args) {
 		
-		entrada = new Scanner(System.in);
-		String frase = entrada.nextLine();
-		LinkedList<ClassificaPalavra> palavras = new LinkedList<ClassificaPalavra>();
+            entrada = new Scanner(System.in);
+            String frase = entrada.nextLine();
+            LinkedList<ClassificaPalavra> palavras = new LinkedList<ClassificaPalavra>();
 		
-		palavras = lexico.executaLexico(frase);
+            palavras = lexico.executaLexico(frase);
 		
-		Sintatico sintatico = new Sintatico(palavras);
+            Sintatico sintatico = new Sintatico(palavras);
+            sintatico.sentenca(palavras);
 	}
 	
 
