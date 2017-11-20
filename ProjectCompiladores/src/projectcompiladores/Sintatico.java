@@ -3,7 +3,6 @@ package projectcompiladores;
 import java.util.ArrayList;
 
 public class Sintatico {
-    
         int i = 0;
         ArrayList<ClassificaPalavra> palavras = new ArrayList<ClassificaPalavra>();
 		
@@ -11,45 +10,22 @@ public class Sintatico {
 	        this.palavras = palavras;
 	}
 	        
-        
 	public void texto(){
-			
 		if(sentenca()){
-                        
 			if(pontoFinal()){
 				System.out.println("Rodou");
 			}else{
 				System.out.println("Falta ponto final");
-			}
-				
+			}	
 		}
 	}
 	
 	public boolean sentenca(){
-                if(sintagmaNominal()){
+                if(sintagmaNominal())
                     return true;
-                }
                 i = 0;
                 if(proAdj())
                     return true;
-                    /**if(SintagmaVerbal()){
-            		return true;
-                    }
-            	
-                }else if(SintagmaVerbal() && i < palavras.size()){
-                    
-                    if(SintagmaNominal() && i < palavras.size()){
-            		return true;
-                    }
-            	
-                }if(SintagmaAdver() && i < palavras.size()){
-                    
-                    sentenca();
-                }*/
-            
-            
-                
-        
                 return false;
         }
         public boolean sintagmaNominal(){
@@ -86,22 +62,18 @@ public class Sintatico {
                     return true;
                 }
             }
-      
             return false;
         }
         
         /** Verifica se a palavra atual tem a classificacao passada como parametro*/
         public boolean encontraClassifi(String nome){
-        	
         	for(int j = 0; j < palavras.get(i).getClassificacao().size(); j++)
         	{
         	    if(palavras.get(i).getClassificacao().get(j).equals(nome)){
         	    	return true;
         	    }
         	}
-        	
         	return false;
-        	
         }
         
         public void incrementofinal(){
@@ -110,31 +82,21 @@ public class Sintatico {
         }
         
         public boolean proAdj(){
-        	
         	if(encontraClassifi("pronome") || encontraClassifi("pronome demonstrativo")){
         		i++;
-                        
         		if(encontraClassifi("substantivo masculino")){
-        			
                                 incrementofinal();
-                                
         			return true;
         		}else if(encontraClassifi("substantivo feminino")){
-        			
                                 incrementofinal();
-                                
         			return true;
         		}
-        		
         		return false;
         	}
-        	
         	return false;
         }
         
         public boolean pontoFinal(){
             return palavras.get(i).getPalavra().equals(".") || palavras.get(i).getPalavra().equals("!") || palavras.get(i).getPalavra().equals("?");
         }
-
-
 }
