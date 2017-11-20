@@ -1,6 +1,6 @@
 package projectcompiladores;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -11,10 +11,10 @@ public class Main {
 		
             entrada = new Scanner(System.in);
             String frase = entrada.nextLine();
-            LinkedList<ClassificaPalavra> palavras = new LinkedList<ClassificaPalavra>();
+            ArrayList<ClassificaPalavra> palavras = new ArrayList<ClassificaPalavra>();
 		
             palavras = lexico.executaLexico(frase);
-		
+            //System.out.println(palavras);
             Sintatico sintatico = new Sintatico(palavras);
             sintatico.sentenca(palavras);
 	}

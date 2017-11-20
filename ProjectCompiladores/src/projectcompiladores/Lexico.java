@@ -1,16 +1,19 @@
 package projectcompiladores;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class Lexico {
 
 	public Lexico(){}
 	
-	public LinkedList<ClassificaPalavra> executaLexico(String frase){
+	public ArrayList<ClassificaPalavra> executaLexico(String frase){
 		int pInicial = 0, pFinal = 0, cont = 0;//pInicial e pFinal sao usadas para demarcar o inicio e fim de uma palavra na string
-		LinkedList<ClassificaPalavra> palavras = new LinkedList<ClassificaPalavra>();
-		String classificacao, adicional, palavra; 
-		
+		ArrayList<ClassificaPalavra> palavras = new ArrayList<ClassificaPalavra>();
+		String palavra; 
+		ArrayList<String> classificacao = null;
+                ArrayList<String> adicional = null;
+                Dicionario dicionario = new Dicionario();
+                
 		//While executa ate o fim da string para separar as palavras
 		while(cont < frase.length()){
 			cont++;
@@ -21,10 +24,13 @@ public class Lexico {
 			} else {
 				pFinal++;
 				
+                                classificacao = new ArrayList<String>();
+                                adicional = new ArrayList<String>();
 				palavra = frase.substring(pInicial, pFinal);
-				classificacao = new Dicionario().classificaPalavra(frase.substring(pInicial, pFinal), "infinitivo");
-				adicional = new Dicionario().classificaPalavra(frase.substring(pInicial, pFinal), "adicional");
-				
+                                
+				classificacao = dicionario.classificaPalavra(palavra, "infinitivo");
+				//adicional = dicionario.classificaPalavra(palavra, "adicional");
+                                adicional = null;
 				palavras.add(new ClassificaPalavra(palavra, classificacao, adicional));//Coloca a palavra, classificacao e conteudo adicional na lista
 				
 				pInicial = cont + 1; //Pula para a proxima palavra
@@ -34,9 +40,9 @@ public class Lexico {
 					if(frase.charAt(cont) == ',' || pontuacaoFinal(frase.charAt(cont))){
 						
 						if(frase.charAt(cont) == ',')
-							palavras.add(new ClassificaPalavra(frase.substring(cont, cont + 1), "Pontua��o Simples", null));
+							palavras.add(new ClassificaPalavra(frase.substring(cont, cont + 1), null, null));
 						else
-							palavras.add(new ClassificaPalavra(frase.substring(cont, cont + 1), "Pontua��o Final", null));
+							palavras.add(new ClassificaPalavra(frase.substring(cont, cont + 1), null, null));
 						pInicial++;
 					}
 				cont++;
@@ -47,7 +53,8 @@ public class Lexico {
 		
 		for(int i = 0; i < palavras.size(); i++){
 			System.out.print(palavras.get(i).getPalavra() + " | ");
-			System.out.print(palavras.get(i).getClassificacao() + " | ");
+              
+                        System.out.print(palavras.get(i).getClassificacao() + " | ");
 			System.out.println(palavras.get(i).getInformacoesAdicionais());
 		}
 		return palavras;

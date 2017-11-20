@@ -1,45 +1,47 @@
 package projectcompiladores;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class Sintatico {
     
         int i = 0;
-        LinkedList<ClassificaPalavra> palavras = new LinkedList<ClassificaPalavra>();
-	public Sintatico(LinkedList<ClassificaPalavra> palavras ){
+        ArrayList<ClassificaPalavra> palavras = new ArrayList<ClassificaPalavra>();
+	public Sintatico(ArrayList<ClassificaPalavra> palavras ){
             this.palavras = palavras;
 	}
         
-        public boolean sentenca(LinkedList<ClassificaPalavra> palavras){
-            if(isSintagmaNominal(palavras.get(i).getClassificacao())){
+        public boolean sentenca(ArrayList<ClassificaPalavra> palavras){
+            if(isSintagmaNominal()){
                 System.out.println("É SINTAGMA NOMINAL");
                 return true;
             }
             return false;
         }
         
-        public boolean isSintagmaNominal(String palavra){
-            if(palavras.get(i).getClassificacao().equals("artigo definido")){
-                i++;
-                if(palavras.get(i).getClassificacao().equals("substantivo masculino"))
-                    return true;
-                else if(palavras.get(i).getClassificacao().equals("substantivo feminino"))
-                    return true;
-            }
-            else if(palavras.get(i).getClassificacao().equals("artigo indefinido")){
-                i++;
-                if(palavras.get(i).getClassificacao().equals("substantivo masculino"))
-                    return true;
-                else if(palavras.get(i).getClassificacao().equals("substantivo feminino"))
-                    return true;
-            }
-            else if(palavras.get(i).getClassificacao().equals("numeral")){
-                i++;
-                i += 1;
-                if(palavras.get(i).getClassificacao().equals("substantivo masculino"))
-                    return true;
-                else if(palavras.get(i).getClassificacao().equals("substantivo feminino"))
-                    return true;
+        public boolean isSintagmaNominal(){
+            for(int j = 0; j < palavras.get(i).getClassificacao().size(); j++){
+                if(palavras.get(i).getClassificacao().get(j).equals("artigo definido")){
+                    i++;
+                    if(palavras.get(i).getClassificacao().get(j).equals("substantivo masculino"))
+                        return true;
+                    else if(palavras.get(i).getClassificacao().get(j).equals("substantivo feminino"))
+                        return true;
+                }
+                else if(palavras.get(i).getClassificacao().get(j).equals("artigo indefinido")){
+                    i++;
+                    if(palavras.get(i).getClassificacao().get(j).equals("substantivo masculino"))
+                        return true;
+                    else if(palavras.get(i).getClassificacao().get(j).equals("substantivo feminino"))
+                        return true;
+                }
+                else if(palavras.get(i).getClassificacao().get(j).equals("numeral")){
+                    i++;
+                    i += 1;
+                    if(palavras.get(i).getClassificacao().get(j).equals("substantivo masculino"))
+                        return true;
+                    else if(palavras.get(i).getClassificacao().get(j).equals("substantivo feminino"))
+                        return true;
+                }
             }
       
             return false;

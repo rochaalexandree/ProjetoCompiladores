@@ -1,9 +1,14 @@
 package projectcompiladores;
+
+import java.util.ArrayList;
+
 public class ClassificaPalavra {
 	
-	private String palavra, classificacao, informacoesAdicionais; 
+	private String palavra;
+        ArrayList<String> classificacao = new ArrayList<String>();
+        ArrayList<String> informacoesAdicionais = new ArrayList<String>();
 	
-	public ClassificaPalavra(String palavra, String classificacao, String informacoesAdicionais){
+	public ClassificaPalavra(String palavra, ArrayList<String> classificacao, ArrayList<String> informacoesAdicionais){
 		this.palavra = palavra;
 		this.classificacao = classificacao;
 		this.informacoesAdicionais = informacoesAdicionais;
@@ -14,11 +19,11 @@ public class ClassificaPalavra {
 		return this.palavra;
 	}
 	
-	public String getClassificacao(){
+	public ArrayList<String> getClassificacao(){
 		return this.classificacao;
 	}
 	
-	public String getInformacoesAdicionais(){
+	public ArrayList<String> getInformacoesAdicionais(){
 		return this.informacoesAdicionais;
 	}
 

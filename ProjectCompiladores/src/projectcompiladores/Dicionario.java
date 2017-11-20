@@ -1,6 +1,7 @@
 package projectcompiladores;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,31 +12,47 @@ public class Dicionario {
 	private Document document;
 	
 	public Dicionario(){}
-	/** M�todo que retorna a classifica��o de cada palavra atrav�s do site www.dicio.com.br*/
-	public String classificaPalavra(String elemento, String infinitivoOuAdicional){
-		String classifica = null;
+	/** M�todo que retorna a classifica��o de cada palavra atrav�s do site www.dicio.com.b*/
+	public ArrayList<String> classificaPalavra(String elemento, String infinitivoOuAdicional){
+		ArrayList<String> classificacao = new ArrayList<String>();
 		
 		try{
 			Document document = Jsoup.connect("https://www.dicio.com.br/" + elemento + "/").get();
 			this.document = document;
-			classifica = getClassificacao(infinitivoOuAdicional);
+			classificacao = getClassificacao(infinitivoOuAdicional);
 			
 		} catch (IOException e){
 			e.printStackTrace();
 		}
-		return classifica;
+                
+		return classificacao;
 	}
 	
-	private String getClassificacao(String infinitivoOuAdicional) {
-		String classifica = null;
-		Elements elements = document.getElementsByTag("span");
-		classifica = getSpanPaginas(elements.eq(7), infinitivoOuAdicional);
+	private ArrayList<String> getClassificacao(String infinitivoOuAdicional) {
 		
-		return classifica;
+                ArrayList<String> classificacao = new ArrayList<String>();
+                String classifica = null;
+		Elements elements = document.getElementsByTag("span");
+               
+		classifica = getSpanPaginas(elements.eq(7), infinitivoOuAdicional);
+                classificacao.add(classifica);
+                
+                for(int i = 8; i < elements.size(); i++){
+                    classifica = elements.eq(i).text();
+                    if(classifica.length() < 29){
+                        classifica = getSpanPaginas(elements.eq(i), infinitivoOuAdicional);
+                        if(classificacoesGerais(classifica) && classifica.length() < 29){   
+
+                            classificacao.add(classifica);
+                        }
+                    }
+                }
+		
+		return classificacao;
 	}
 
 	private String getSpanPaginas(Elements elements, String infinitivoOuAdicional) {
-		String classifica = null;
+		String classifica;
 		
 		classifica = elements.text(); // Pega o texto da tag para classificar a palavra
 		String[] palavras = classifica.split(" ");
@@ -50,11 +67,30 @@ public class Dicionario {
 		return classifica;
 	}
 	private String tempoVerbal(String classifica) {
-		if(classifica.length() > 25){
+		if(classifica.length() > 29){
 			String[] palavras = classifica.split(" ");
 			classifica = palavras[3];
 			return classifica;
 		}
 		return classifica;
 	}
+        
+        private boolean classificacoesGerais(String classificacao){
+            switch (classificacao) {
+                case "artigo definido":
+                    return true;
+                case "preposição":
+                    return true;
+                case "substantivo masculino":
+                    return true;
+                case "numeral":
+                    return true;
+                case "pronome pessoal":
+                    return true;
+                default:
+                    break;
+            }
+                
+                return false;
+        }
 }
