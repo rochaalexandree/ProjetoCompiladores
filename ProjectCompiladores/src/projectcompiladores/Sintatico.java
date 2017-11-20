@@ -19,7 +19,8 @@ public class Sintatico {
 			}	
 		}
 	}
-	
+	/** Metodo que chama os demai
+        * @return s*/
 	public boolean sentenca(){
                 if(sintagmaNominal())
                     return true;
@@ -28,6 +29,7 @@ public class Sintatico {
                     return true;
                 return false;
         }
+        /**Verifica Sintagma Nonimal*/
         public boolean sintagmaNominal(){
             if(encontraClassifi("artigo definido")){
                 i++;
@@ -75,12 +77,13 @@ public class Sintatico {
         	}
         	return false;
         }
-        
+        /**Verifica se há necessidade de incrementar a posicao*/
         public void incrementofinal(){
                 if(i < palavras.size() - 1)
                     i++;              
         }
-        
+        /**Verifica pronome adjetiv
+        * @return o*/
         public boolean proAdj(){
         	if(encontraClassifi("pronome") || encontraClassifi("pronome demonstrativo")){
         		i++;
@@ -95,7 +98,8 @@ public class Sintatico {
         	}
         	return false;
         }
-        
+        /**Verifica se existe um ponto final na posicao especificad
+        * @return a*/
         public boolean pontoFinal(){
             return palavras.get(i).getPalavra().equals(".") || palavras.get(i).getPalavra().equals("!") || palavras.get(i).getPalavra().equals("?");
         }
