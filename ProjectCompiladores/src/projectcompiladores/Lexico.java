@@ -62,10 +62,7 @@ public class Lexico {
 	}
 	
 	public boolean pontuacaoFinal(char x){
-		if(x == '.' || x == '!' || x == '?')
-			return true;
-		else 
-			return false;
+            return x == '.' || x == '!' || x == '?';
 		
 	}
 	

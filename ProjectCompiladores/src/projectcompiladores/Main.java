@@ -16,7 +16,7 @@ public class Main {
             palavras = lexico.executaLexico(frase);
             //System.out.println(palavras);
             Sintatico sintatico = new Sintatico(palavras);
-            sintatico.sentenca(palavras);
+            sintatico.texto();
 	}
 	
 

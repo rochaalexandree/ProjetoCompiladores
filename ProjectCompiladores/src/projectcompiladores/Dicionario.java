@@ -79,13 +79,29 @@ public class Dicionario {
             switch (classificacao) {
                 case "artigo definido":
                     return true;
+                case "artigo indefinido":
+                    return true;
                 case "preposição":
                     return true;
                 case "substantivo masculino":
                     return true;
+                case "substantivo feminino":
+                    return true;
                 case "numeral":
                     return true;
                 case "pronome pessoal":
+                    return true;
+                case "pronome indefinido":
+                    return true;
+                case "locução adverbial":
+                    return true;
+                case "locução conjuntiva":
+                    return true;
+                case "advérbio":
+                    return true;
+                case "adjetivo":
+                    return true;
+                case "expressão":
                     return true;
                 default:
                     break;
