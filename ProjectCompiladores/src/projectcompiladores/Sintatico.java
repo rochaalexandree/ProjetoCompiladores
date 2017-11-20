@@ -8,77 +8,90 @@ public class Sintatico {
         ArrayList<ClassificaPalavra> palavras = new ArrayList<ClassificaPalavra>();
 		
         public Sintatico(ArrayList<ClassificaPalavra> palavras ){
-	            this.palavras = palavras;
-		}
+	        this.palavras = palavras;
+	}
 	        
         
-		public void texto(){
+	public void texto(){
 			
-			if(sentenca()){
-								
-				if(palavras.get(i).getPalavra().equals(".")){
-					System.out.println("Rodou");
-				}else{
-					System.out.println("Falta ponto final");
-				}
-				
+		if(sentenca()){
+			System.out.println(palavras.get(i).getPalavra());
+                        
+			if(palavras.get(i).getPalavra().equals(".")){
+				System.out.println("Rodou");
+			}else{
+				System.out.println("Falta ponto final");
 			}
+				
 		}
+	}
 	
-		public boolean sentenca(){
-            if(SintagmaNominal() ){
-            	i++;
-            	if(SintagmaVerbal()){
+	public boolean sentenca(){
+                if(sintagmaNominal()){
+                    return true;
+                    /**if(SintagmaVerbal()){
             		return true;
-            	}
+                    }
             	
-            }else if(SintagmaVerbal()){
-            	i++;
-            	if(SintagmaNominal()){
+                }else if(SintagmaVerbal() && i < palavras.size()){
+                    
+                    if(SintagmaNominal() && i < palavras.size()){
             		return true;
-            	}
+                    }
             	
-            }if(SintagmaAdver()){
-            	i++;
-            	sentenca();
-            }
+                }if(SintagmaAdver() && i < palavras.size()){
+                    
+                    sentenca();
+                }*/
             
             
-            return false;
+                
         }
-        
-        public boolean SintagmaNominal(){
-            if(palavras.get(i).getClassificacao().equals("artigo definido")){
+                return false;
+        }
+        public boolean sintagmaNominal(){
+            if(encontraClassifi("artigo definido")){
                 i++;
-                if(palavras.get(i).getClassificacao().equals("substantivo masculino"))
+                if(encontraClassifi("substantivo masculino")){
+                    incrementofinal();
                     return true;
-                else if(palavras.get(i).getClassificacao().equals("substantivo feminino"))
+                }
+                else if(encontraClassifi("substantivo feminino")){
+                    incrementofinal();
                     return true;
+                }
             }
-            else if(palavras.get(i).getClassificacao().equals("artigo indefinido")){
+            else if(encontraClassifi("artigo indefinido")){
                 i++;
-                if(palavras.get(i).getClassificacao().equals("substantivo masculino"))
+                if(encontraClassifi("substantivo masculino")){
+                    incrementofinal();
                     return true;
-                else if(palavras.get(i).getClassificacao().equals("substantivo feminino"))
+                }
+                else if(encontraClassifi("substantivo feminino")){
+                    incrementofinal();
                     return true;
+                }
             }
-            else if(palavras.get(i).getClassificacao().equals("numeral")){
+            else if(encontraClassifi("numeral")){
                 i++;
-                i += 1;
-                if(palavras.get(i).getClassificacao().equals("substantivo masculino"))
+                if(encontraClassifi("substantivo masculino")){
+                    incrementofinal();
                     return true;
-                else if(palavras.get(i).getClassificacao().equals("substantivo feminino"))
+                }
+                else if(encontraClassifi("substantivo feminino")){
+                    incrementofinal();
                     return true;
+                }
             }
       
             return false;
         }
- 
+        /**
         public boolean SintagmaVerbal(){
         	
-        	if(palavras.get(i).getClassificacao().equals("verbo")){
+        	if(encontraClassifi("verbo")){
         		return true;
-        	}else if(palavras.get(i).getClassificacao().equals("verbo") && SintagmaPrep()){
+        	}else if(encontraClassifi("verbo") && SintagmaPrep()){
         		return true;
         	}
         	
@@ -110,7 +123,7 @@ public class Sintatico {
         
         public boolean adverbio(){
         	
-        	if(palavras.get(i).getClassificacao().equals("advérbio")){
+        	if(encontraClassifi("advérbio")){
         		i++;
         		adverbio2();
         		return true;
@@ -132,11 +145,11 @@ public class Sintatico {
         
         public boolean substantivo(){
         	
-        	if(palavras.get(i).getClassificacao().equals("pronome")){
+        	if(encontraClassifi("pronome")){
         		i++;
         		substantivo2();
         		return true;
-        	}else if(palavras.get(i).getClassificacao().equals("substantivo")){
+        	}else if(encontraClassifi("substantivo")){
         		i++;
         		substantivo2();
         		return true;
@@ -155,4 +168,25 @@ public class Sintatico {
         	return false;
         	
         }
+        */
+        /** Verifica se a palavra atual tem a classificacao passada como parametro*/
+        public boolean encontraClassifi(String nome){
+        	
+        	for(int j = 0; j < palavras.size(); j++)
+        	{
+        	    if(palavras.get(i).getClassificacao().get(j).equals(nome)){
+        	    	return true;
+        	    }
+        	}
+        	
+        	return false;
+        	
+        }
+        
+        public void incrementofinal(){
+                if(i < palavras.size() - 1)
+                    i++;              
+       }
+
+
 }
