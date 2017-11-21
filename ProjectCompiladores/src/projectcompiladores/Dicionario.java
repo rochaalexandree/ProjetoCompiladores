@@ -93,6 +93,8 @@ public class Dicionario {
                     return true;
                 case "pronome indefinido":
                     return true;
+                case "pronome demonstrativo":
+                    return true;
                 case "locução adverbial":
                     return true;
                 case "locução conjuntiva":

@@ -13,61 +13,217 @@ public class Sintatico {
 	public void texto(){
 		if(sentenca()){
 			if(pontoFinal()){
-				System.out.println("Rodou");
+				System.out.println("Frase correta");
 			}else{
 				System.out.println("Falta ponto final");
 			}	
 		}
 	}
-	/** Metodo que chama os demai
+	/** Metodo que chama os demais
         * @return s*/
 	public boolean sentenca(){
-                if(sintagmaNominal())
+                if(sintagmaNominal()){
+                    return sintagmaVerbal();
+                } else if(sintagmaVerbal()){
+                    return sintagmaNominal();
+                }else if(sintagmaVerbal()){
                     return true;
-                i = 0;
-                if(proAdj())
-                    return true;
+                } else if(sintagmaAdverbial()){
+                    sentenca();
+                }
+                
                 return false;
         }
-        /**Verifica Sintagma Nonimal*/
+        /**Verifica Sintagma Nonima
+        * @return l*/
         public boolean sintagmaNominal(){
-            if(encontraClassifi("artigo definido")){
+            if(palavras.size() < 2)
+                return false;
+            if(encontraClassifi("artigo definido") || encontraClassifi("artigo indefinido")){
                 i++;
-                if(encontraClassifi("substantivo masculino")){
-                    incrementofinal();
-                    return true;
-                }
-                else if(encontraClassifi("substantivo feminino")){
-                    incrementofinal();
-                    return true;
+                return nome();
+                
+            } else if(encontraClassifi("pronome") || encontraClassifi("pronome demonstrativo")){
+                i++;
+                return nome();
+            } else if(encontraClassifi("numeral")){
+                i++;
+                return nome();
+                
+            } else if(nome()){
+                return true;
+            } else if(encontraClassifi("pronome demonstrativo")){
+                i++;
+                sintagmaNominal();
+            }
+            
+            return false;
+        }
+        
+        public boolean nome(){
+            if(encontraClassifi("pronome") || encontraClassifi("pronome demonstrativo")){
+                i++;
+                return nome2();
+            }
+            if(encontraClassifi("substantivo masculino") || encontraClassifi("substantivo feminino")){
+                i++;
+                return nome2();
+            } else if(encontraClassifi("Nome")){
+                i++;
+                return nome2();
+            } else if(sintagmaAdjetival()){
+                if(nome()){
+                    return nome2();
                 }
             }
-            else if(encontraClassifi("artigo indefinido")){
-                i++;
-                if(encontraClassifi("substantivo masculino")){
-                    incrementofinal();
+            return false;
+        }
+        
+        private boolean nome2() {
+            if(sintagmaAdjetival()){
+                return nome2();
+            } else if(sintagmaPreposicional()){
+                return nome2();
+            }
+            return true;
+        }
+        
+        private boolean sintagmaAdjetival() {
+            
+            if(adjetivo()){
+                if(sintagmaAdverbial()){
+                    return true;
+                } else if(sintagmaPreposicional()){
                     return true;
                 }
-                else if(encontraClassifi("substantivo feminino")){
-                    incrementofinal();
-                    return true;
+                return true;
+            } else if(sintagmaAdverbial()){
+                return adjetivo();
+            }
+            return false;
+        }
+        
+        private boolean adjetivo() {
+            if(encontraClassifi("adjetivo")){
+                i++;
+                return adjetivo2();
+            } else if(sintagmaAdverbial()){
+                if(adjetivo()){
+                    return adjetivo2();
                 }
             }
-            else if(encontraClassifi("numeral")){
+            return false;
+        }
+        
+        private boolean adjetivo2() {
+            if(sintagmaAdverbial()){
+                adjetivo2();
+            } else if(sintagmaPreposicional()){
+                adjetivo2();
+            }
+            return true;
+        }
+        
+        private boolean sintagmaPreposicional() {
+            if(encontraClassifi("preposição")){
                 i++;
-                if(encontraClassifi("substantivo masculino")){
-                    incrementofinal();
+                if(sintagmaNominal()){
                     return true;
-                }
-                else if(encontraClassifi("substantivo feminino")){
-                    incrementofinal();
+                } else if(sintagmaAdverbial()){
                     return true;
                 }
             }
             return false;
         }
         
-        /** Verifica se a palavra atual tem a classificacao passada como parametro*/
+        private boolean sintagmaVerbal() {
+            if(palavras.size() < 2)
+                return false;
+            if(verbo()){
+                if(sintagmaPreposicional()){
+                    return true;
+                } else if(sintagmaAdverbial()){
+                    return true;
+                }
+            } else if(sintagmaAdverbial()){
+                return verbo();
+            }
+            return false;
+        }
+        
+        private boolean verbo() {
+            if(sintagmaAdverbial()){
+                if(verbo()){
+                    return verbo2();
+                }
+            } else if(VB()){
+                if(verbo2()){
+                    return true;
+                } else if( sintagmaNominal()){
+                    return verbo2();
+                } else if(sintagmaPreposicional()){
+                    return verbo2();
+                } else if(sintagmaAdjetival()){
+                    return verbo2();
+                } else if(sintagmaAdverbial()){
+                    return verbo2();
+                }
+                return verbo2();
+            }
+            return false;
+        }
+        private boolean verbo2() {
+            if(sintagmaNominal()){
+                verbo2();
+            } else if(sintagmaPreposicional()){
+                verbo2();
+            } else if(sintagmaAdverbial()){
+                verbo2();
+            }
+            return true;
+        }
+        
+        private boolean VB() {
+            if(encontraClassifi("verbo")){
+                i++;
+                return true;
+            }
+            return false;
+        }
+        
+        private boolean sintagmaAdverbial() {
+            if(adverbio()){
+                if(sintagmaAdverbial2()){
+                    return true;
+                } else if(sintagmaPreposicional()){
+                    return sintagmaAdverbial2();
+                }
+            }
+            return true;
+        }
+        
+        private boolean sintagmaAdverbial2(){
+            if(adverbio()){
+                sintagmaAdverbial2();
+            }
+            return true;
+        }
+        
+        private boolean adverbio() {
+            if(encontraClassifi("advérbio")){
+                return adverbio2();
+            }
+            return false;
+        }
+        private boolean adverbio2() {
+            if(sintagmaPreposicional()){
+                adverbio2();
+            }
+            return true;
+        }
+        /** Verifica se a palavra atual tem a classificacao passada como parametr
+        * @param nome
+        * @return o*/
         public boolean encontraClassifi(String nome){
         	for(int j = 0; j < palavras.get(i).getClassificacao().size(); j++)
         	{
@@ -75,32 +231,41 @@ public class Sintatico {
         	    	return true;
         	    }
         	}
-        	return false;
+                return false;
         }
         /**Verifica se há necessidade de incrementar a posicao*/
         public void incrementofinal(){
                 if(i < palavras.size() - 1)
                     i++;              
         }
-        /**Verifica pronome adjetiv
-        * @return o*/
-        public boolean proAdj(){
-        	if(encontraClassifi("pronome") || encontraClassifi("pronome demonstrativo")){
-        		i++;
-        		if(encontraClassifi("substantivo masculino")){
-                                incrementofinal();
-        			return true;
-        		}else if(encontraClassifi("substantivo feminino")){
-                                incrementofinal();
-        			return true;
-        		}
-        		return false;
-        	}
-        	return false;
-        }
-        /**Verifica se existe um ponto final na posicao especificad
-        * @return a*/
+        
         public boolean pontoFinal(){
             return palavras.get(i).getPalavra().equals(".") || palavras.get(i).getPalavra().equals("!") || palavras.get(i).getPalavra().equals("?");
         }
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 }
