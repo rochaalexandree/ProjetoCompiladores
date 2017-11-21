@@ -12,20 +12,20 @@ public class Sintatico {
 	        
 	public void texto(){
 		if(sentenca()){
-			if(pontoFinal()){
-				System.out.println("Frase correta");
-			}else{
-				System.out.println("Falta ponto final");
-			}	
-		}
+			System.out.println("Deu bom");
+		} else {
+                    System.out.println("Frase Errada");
+                }
 	}
 	/** Metodo que chama os demais
         * @return s*/
 	public boolean sentenca(){
                 if(sintagmaNominal()){
-                    return sintagmaVerbal();
+                    sintagmaVerbal();
+                    return i == palavras.size();
                 } else if(sintagmaVerbal()){
-                    return sintagmaNominal();
+                    sintagmaNominal();
+                    return i == palavras.size();
                 }else if(sintagmaVerbal()){
                     return true;
                 } else if(sintagmaAdverbial()){
@@ -39,20 +39,24 @@ public class Sintatico {
         public boolean sintagmaNominal(){
             if(palavras.size() < 2)
                 return false;
-            if(encontraClassifi("artigo definido") || encontraClassifi("artigo indefinido")){
+            if((encontraClassifi("artigo definido") || encontraClassifi("artigo indefinido")) && i < palavras.size()){
                 i++;
                 return nome();
                 
-            } else if(encontraClassifi("pronome") || encontraClassifi("pronome demonstrativo")){
+            } 
+            if((encontraClassifi("pronome") || encontraClassifi("pronome demonstrativo")) && i < palavras.size()){
                 i++;
                 return nome();
-            } else if(encontraClassifi("numeral")){
+            } 
+            if(encontraClassifi("numeral") && i < palavras.size()){
                 i++;
                 return nome();
                 
-            } else if(nome()){
+            } 
+            if(nome()){
                 return true;
-            } else if(encontraClassifi("pronome demonstrativo")){
+            } 
+            if(encontraClassifi("pronome demonstrativo") && i < palavras.size()){
                 i++;
                 sintagmaNominal();
             }
@@ -61,14 +65,14 @@ public class Sintatico {
         }
         
         public boolean nome(){
-            if(encontraClassifi("pronome") || encontraClassifi("pronome demonstrativo")){
+            if((encontraClassifi("pronome") || encontraClassifi("pronome demonstrativo") || encontraClassifi("pronome pessoal")) && i < palavras.size()){
                 i++;
                 return nome2();
             }
-            if(encontraClassifi("substantivo masculino") || encontraClassifi("substantivo feminino")){
+            if((encontraClassifi("substantivo masculino") || encontraClassifi("substantivo feminino") || encontraClassifi("substantivo deverbal")) && i < palavras.size()){
                 i++;
                 return nome2();
-            } else if(encontraClassifi("Nome")){
+            } else if(encontraClassifi("Nome") && i < palavras.size()){
                 i++;
                 return nome2();
             } else if(sintagmaAdjetival()){
@@ -81,9 +85,9 @@ public class Sintatico {
         
         private boolean nome2() {
             if(sintagmaAdjetival()){
-                return nome2();
+                nome2();
             } else if(sintagmaPreposicional()){
-                return nome2();
+                nome2();
             }
             return true;
         }
@@ -104,13 +108,18 @@ public class Sintatico {
         }
         
         private boolean adjetivo() {
-            if(encontraClassifi("adjetivo")){
+            
+            if(encontraClassifi("adjetivo") && i < palavras.size()){
                 i++;
-                return adjetivo2();
+                if(adjetivo2()){
+                    return adjetivo3();
+                }
+                return true;
             } else if(sintagmaAdverbial()){
                 if(adjetivo()){
                     return adjetivo2();
                 }
+                return true;
             }
             return false;
         }
@@ -124,8 +133,19 @@ public class Sintatico {
             return true;
         }
         
+        private boolean adjetivo3(){
+            if(sintagmaAdverbial()){
+                if(adjetivo2()){
+                    adjetivo3();
+                }
+                return false;
+            }
+            return true;
+        }
+        
         private boolean sintagmaPreposicional() {
-            if(encontraClassifi("preposição")){
+            
+            if(encontraClassifi("preposição") && i < palavras.size()){
                 i++;
                 if(sintagmaNominal()){
                     return true;
@@ -184,7 +204,8 @@ public class Sintatico {
         }
         
         private boolean VB() {
-            if(encontraClassifi("verbo")){
+            
+            if(encontraClassifi("verbo") && i < palavras.size()){
                 i++;
                 return true;
             }
@@ -199,7 +220,7 @@ public class Sintatico {
                     return sintagmaAdverbial2();
                 }
             }
-            return true;
+            return false;
         }
         
         private boolean sintagmaAdverbial2(){
@@ -210,7 +231,9 @@ public class Sintatico {
         }
         
         private boolean adverbio() {
-            if(encontraClassifi("advérbio")){
+            
+            if(encontraClassifi("advérbio") && i < palavras.size()){
+                i++;
                 return adverbio2();
             }
             return false;
@@ -225,12 +248,18 @@ public class Sintatico {
         * @param nome
         * @return o*/
         public boolean encontraClassifi(String nome){
-        	for(int j = 0; j < palavras.get(i).getClassificacao().size(); j++)
-        	{
-        	    if(palavras.get(i).getClassificacao().get(j).equals(nome)){
-        	    	return true;
-        	    }
-        	}
+                System.out.print(nome + " | ");
+        	if(i < palavras.size())
+                    for(int j = 0; j < palavras.get(i).getClassificacao().size(); j++)
+                    {
+                        if(palavras.get(i).getClassificacao().get(j).equals(nome)){
+                            //if(nome.equals("adjetivo"))
+                                System.out.println("entrou");
+
+                            return true;
+                        }
+                    }
+                 System.out.println("entrou2");
                 return false;
         }
         /**Verifica se há necessidade de incrementar a posicao*/
@@ -242,30 +271,5 @@ public class Sintatico {
         public boolean pontoFinal(){
             return palavras.get(i).getPalavra().equals(".") || palavras.get(i).getPalavra().equals("!") || palavras.get(i).getPalavra().equals("?");
         }
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
+  
 }

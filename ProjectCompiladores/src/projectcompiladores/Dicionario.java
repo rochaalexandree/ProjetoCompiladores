@@ -87,6 +87,8 @@ public class Dicionario {
                     return true;
                 case "substantivo feminino":
                     return true;
+                case "substantivo deverbal":
+                    return true;
                 case "numeral":
                     return true;
                 case "pronome pessoal":
