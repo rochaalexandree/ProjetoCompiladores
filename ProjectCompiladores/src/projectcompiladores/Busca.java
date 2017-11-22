@@ -17,6 +17,9 @@ public class Busca {
             System.out.println("\nlink : " + link.attr("href"));
             System.out.println("text : " + link.text());
         }
+        Elements div = doc.select("div[id=resultStats]");
+
+        System.out.println(div.text());
         
         } catch(IOException e){
             e.printStackTrace();
