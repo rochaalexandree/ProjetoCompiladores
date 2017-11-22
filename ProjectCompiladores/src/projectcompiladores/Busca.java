@@ -10,7 +10,7 @@ public class Busca {
     
     public Busca(String frase){
         try{
-        Document doc = Jsoup.connect("https://www.google.com/search?q=" + frase + "&num=20").get();
+        Document doc = Jsoup.connect("http://www.google.com.br/search?q=" + "\"" + frase + "\"").get();
         
         Elements links = doc.select("a[href]");
         for(Element link: links){
