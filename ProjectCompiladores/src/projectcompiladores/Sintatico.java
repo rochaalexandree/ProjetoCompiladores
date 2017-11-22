@@ -12,7 +12,7 @@ public class Sintatico {
 	        
 	public void texto(){
 		if(sentenca()){
-			System.out.println("Deu bom");
+			System.out.println("Frase correta");
 		} else {
                     System.out.println("Frase Errada");
                 }
