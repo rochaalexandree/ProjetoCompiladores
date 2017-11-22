@@ -17,6 +17,7 @@ public class Main {
             //System.out.println(palavras);
             Sintatico sintatico = new Sintatico(palavras);
             sintatico.texto();
+          
 	}
 	
 

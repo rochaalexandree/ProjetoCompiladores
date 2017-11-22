@@ -26,5 +26,9 @@ public class ClassificaPalavra {
 	public ArrayList<String> getInformacoesAdicionais(){
 		return this.informacoesAdicionais;
 	}
+        
+        public void setInformacoesAdicioanis(ArrayList<String> sinonimos){
+                this.informacoesAdicionais = sinonimos;
+        }
 
 }

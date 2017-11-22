@@ -1,10 +1,13 @@
 package projectcompiladores;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Set;
 
 public class Sintatico {
         int i = 0;
         ArrayList<ClassificaPalavra> palavras = new ArrayList<ClassificaPalavra>();
+        String novaFrase = "";
 		
         public Sintatico(ArrayList<ClassificaPalavra> palavras ){
 	        this.palavras = palavras;
@@ -16,6 +19,13 @@ public class Sintatico {
 		} else {
                     System.out.println("Frase Errada");
                 }
+                
+                encontraSinonimo();
+                new Busca(novaFrase);
+                
+                
+                
+                
 	}
 	/** Metodo que chama os demais
         * @return s*/
@@ -270,6 +280,28 @@ public class Sintatico {
         
         public boolean pontoFinal(){
             return palavras.get(i).getPalavra().equals(".") || palavras.get(i).getPalavra().equals("!") || palavras.get(i).getPalavra().equals("?");
+        }
+        
+        public void encontraSinonimo(){
+                
+                Dicionario dicionario = new Dicionario();
+                
+                for(int j = 0; j < palavras.size(); j++){
+                    for(int k = 0; k < palavras.get(j).getClassificacao().size(); k++){
+                        if(palavras.get(j).getClassificacao().get(k).equals("verbo") || palavras.get(j).getClassificacao().get(k).equals("adjetivo")){
+                            palavras.get(j).setInformacoesAdicioanis(dicionario.buscaSinonimos(palavras.get(j).getPalavra()));
+                        } 
+                    }
+                    if(palavras.get(j).getInformacoesAdicionais() != null){
+                        Collections.shuffle(palavras.get(j).getInformacoesAdicionais());
+                        novaFrase = novaFrase.concat(palavras.get(j).getInformacoesAdicionais().get(0));
+                    }else{
+                        novaFrase = novaFrase.concat(palavras.get(j).getPalavra());
+                    }
+                    novaFrase = novaFrase.concat(" ");
+                }
+                
+                System.out.println(novaFrase);
         }
   
 }

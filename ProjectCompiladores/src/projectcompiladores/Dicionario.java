@@ -2,15 +2,18 @@ package projectcompiladores;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class Dicionario {
 	
 	private Document document;
-	
+        private Document documentSinonimo;
+	ArrayList<String> sinonimos = new ArrayList<String>();
 	public Dicionario(){}
 	/** M�todo que retorna a classifica��o de cada palavra atrav�s do site www.dicio.com.b*/
 	public ArrayList<String> classificaPalavra(String elemento, String infinitivoOuAdicional){
@@ -113,4 +116,45 @@ public class Dicionario {
                 
                 return false;
         }
+        
+        public ArrayList<String> buscaSinonimos(String palavra){
+            ArrayList<String> sinonimos = new ArrayList<String>();
+		
+		try{
+			Document documentSinonimo = Jsoup.connect("https://www.dicio.com.br/" + palavra + "/").get();
+			this.documentSinonimo = documentSinonimo;
+			sinonimos = getSinonimos();
+			
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+                
+		return sinonimos;
+        } 
+        
+        private ArrayList<String> getSinonimos() {
+		
+                ArrayList<String> sinonimos = new ArrayList<String>();
+                
+		Elements elements = documentSinonimo.getElementsByClass("adicional sinonimos");
+                
+		sinonimos = getTagAPaginas(elements.eq(0));
+		
+		return sinonimos;
+	}
+        
+        private ArrayList<String> getTagAPaginas(Elements elements) {
+		ArrayList<String> sinonimos = new ArrayList<String>();
+		String sinonimo; 
+		for(Element element: elements){
+                    Elements sin = element.getElementsByTag("span");
+                    for(Element a: sin){
+                        sinonimo = a.getElementsByTag("a").text();
+                        String[] palavras = sinonimo.split(" ");
+                        sinonimos.addAll(Arrays.asList(palavras));
+                    }
+                }
+		
+		return sinonimos;
+	}
 }
